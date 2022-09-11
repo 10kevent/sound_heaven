@@ -1,0 +1,32 @@
+:root {
+    --main-white:#FFF5EE;
+    --main-black: #28282B
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: "Poppins", sans-serif;
+    font-size: 62.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200vh;
+}
+
+body {
+    font-size: 1.4rem;
+    background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
+}
+
+.btn {
+    cursor: pointer;
+}
+
+.mr-8 {
+    margin-right: 8px;
+}

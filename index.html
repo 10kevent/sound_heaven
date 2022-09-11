@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/style/base.css">
+    <link rel="stylesheet" href="./assets/style/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/1afd3b53e9.js" crossorigin="anonymous"></script>
+    <title>Soundhaven</title>
+</head>
+<body>
+    <div class="player">
+        <div class="dashboard">
+            <div class="header">
+                <i class="fa-solid fa-bars dash-icon btn"></i>
+                <div class="header_main">
+                    <h4>Now Playing</h4>
+                    <h2>Funky Meow</h2>
+                </div>
+                <i class="fa-regular fa-heart dash-icon btn"></i>
+            </div>
+
+            <div class="song-avatar">
+                <!-- <img src="./assets/img/cat.png" alt="I'm CD"> -->
+            </div>
+
+            <input type="range" id="progress" class="progress bar" value="0" step="1" min="0" max="100">
+            
+            <div class="controller">
+                <div class="btn btn-shuffle">
+                    <i class="fa-solid fa-shuffle dash-icon"></i>
+                </div>
+                <div class="btn btn-prev">
+                    <i class="fa-solid fa-backward dash-icon"></i>
+                </div>
+                <div class="btn btn-play">
+                    <i class="fa-solid fa-circle-play dash-icon-main"></i>
+                </div>
+                <div class="btn btn-next">
+                    <i class="fa-solid fa-forward dash-icon"></i>
+                </div>
+                <div class="btn btn-repeat">
+                    <i class="fa-solid fa-repeat dash-icon"></i>
+                </div>
+            </div>
+
+
+            <audio src="" id="audio"></audio>
+            <div class="voice">
+                <i class="fa-solid fa-volume-high dash-icon"></i>
+                <input type="range" id="volumn" class="volumn bar" value="0" step="1" min="0" max="100">
+            </div>
+        </div>
+
+        <div class="playlist">
+            <div class="playlist-heading">
+                <h2 class="playlist-title">Your playlist</h2>
+                <i class="fa-solid fa-xmark playlist-icon mr-8"></i>
+            </div>
+            
+            <ul class="song-list">
+
+            </ul>
+        </div>
+    </div>
+    <script src="./javascript/main.js"></script>
+</body>
+</html>
