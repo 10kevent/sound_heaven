@@ -14,7 +14,9 @@ const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
 const app = {
-    song: [
+    currentIndex: 0,
+
+    songs: [
         {
             name: 'Chỉ vì quá yêu anh',
             singer: 'Dunno',
@@ -68,11 +70,11 @@ const app = {
             singer: 'Thế Khoa',
             path: '../assets/music/vi_sao_the.mp3',
             img: '../assets/img/cat.png'
-        },
+        }
     ],
 
     render: function() {
-        const htmls = this.song.map(song => {
+        const htmls = this.songs.map(song => {
             return `
             <div class="song">
                 <div class="thumb" 
@@ -91,7 +93,37 @@ const app = {
         $('.song-list').innerHTML = htmls.join('\n');
     },
 
+    defineProperties: function() {
+        Object.defineProperty(this, 'currentSong', {
+            get: function() {
+                return this.songs[this.currentIndex];
+            }
+        });
+    },
+
+    handleEvent: function() {
+        document.onscroll = function() {
+            // console.log(window.scrollY);
+        };
+    },
+
+    loadCurrentSong: function() {
+        const heading = $('.header h2');
+        const songAva = $('.song-avatar');
+        const audio = $('#audio');
+        heading.textContent = this.currentSong.name;
+        songAva.style.backgroundImage = `url('${this.currentSong.img}')`;
+        audio.src = this.currentSong.path;
+    },
+
     start: function() {
+        
+        this.defineProperties();
+
+        this.handleEvent();
+        // Load first song into UI when app is started
+        this.loadCurrentSong();
+
         this.render();
     },
 }

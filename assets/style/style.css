@@ -5,7 +5,7 @@
     border-radius: 16px;
     width: 400px;
     opacity: .8;
-    box-shadow: 2px 2px 15px #F3CFC6;
+    box-shadow: 1px 1px 30px 10px #F3CFC6;
     text-align: center;
     color: var(--main-black);
 }
@@ -37,8 +37,8 @@
 .song-avatar {
     background: url(../img/cat.png) no-repeat center;
     background-size: 250px;
-    height: 200px;
-    width: 200px;
+    height: var(--song-ava-side);
+    width: var(--song-ava-side);
     border-radius: 50%;
     margin: 16px auto;
 }
@@ -93,7 +93,7 @@
     border-radius: 16px;
     padding: 16px 20px;
     color: var(--main-white);
-    max-height: 530px;
+    max-height: 555px;
     overflow-y: auto;
     scrollbar-width: none;
 }
@@ -135,7 +135,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 10px;
-    border-radius: 12px
+    border-radius: 12px;
+    margin-top: 4px;
 }
 .song:hover {
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
@@ -146,12 +147,13 @@
 }
 .song .author {
     font-size: 1.2rem;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--main-black);
 }
 .song .title {
-    font-weight: 600;
-    font-size: 1.4rem;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--main-white);
 }
 .option {
     margin-left: auto;
