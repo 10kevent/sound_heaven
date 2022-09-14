@@ -13,63 +13,69 @@
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
+const heading = $('.header h2');
+const songAva = $('.song-avatar');
+const audio = $('#audio');
+const playBtn = $('.play-pause');
+const player = $('.player');
+
 const app = {
     currentIndex: 0,
-
+    isPlaying: false,
     songs: [
         {
             name: 'Chỉ vì quá yêu anh',
             singer: 'Dunno',
-            path: '../assets/music/chi_vi_qua_yeu_anh.mp3',
-            img: '../assets/img/chi_vi_qua_yeu_anh_singer.jpg'
+            path: './assets/music/chi_vi_qua_yeu_anh.mp3',
+            img: './assets/img/chi_vi_qua_yeu_anh_singer.jpg'
         },
         {
             name: 'Có khi',
             singer: 'Nguyễn Tuấn Phong',
-            path: '../assets/music/co_khi_nt_phong.mp3',
-            img: '../assets/img/maxresdefault.jpg'
+            path: './assets/music/co_khi_nt_phong.mp3',
+            img: './assets/img/maxresdefault.jpg'
         },
         {
             name: 'Fireworks',
             singer: 'DAOKO',
-            path: '../assets/music/daoko.mp3',
-            img: '../assets/img/daoko.png'
+            path: './assets/music/daoko.mp3',
+            img: './assets/img/daoko.png'
         },
         {
             name: 'Memories',
             singer: 'Maroon 5',
-            path: '../assets/music/memories_maroon.mp3',
-            img: '../assets/img/maroon_5.jpg'
+            path: './assets/music/memories_maroon.mp3',
+            img: './assets/img/maroon_5.jpg'
         },
         {
             name: 'Thời Không Sai Lệch',
             singer: '艾辰',
-            path: '../assets/music/thoi_khong_sai_lech.mp3',
-            img: '../assets/img/thoi_khong_sai_lech.jpg'
+            path: './assets/music/thoi_khong_sai_lech.mp3',
+            img: './assets/img/thoi_khong_sai_lech.jpg'
         },
         {
             name: 'Tình đơn phương 3',
             singer: 'Thế Khoa',
-            path: '../assets/music/tinh_don_phuong_3.mp3',
-            img: '../assets/img/cat.png'
+            path: './assets/music/tinh_don_phuong_3.mp3',
+            img: './assets/img/cat.png'
         },
         {
             name: 'Uyên Ương Hồ Điệp Mộng',
             singer: 'Hoàng An',
-            path: '../assets/music/uyen_uong_ho_diep.mp3',
-            img: '../assets/img/Langdongtamhon.jpg'
+            path: './assets/music/uyen_uong_ho_diep.mp3',
+            img: './assets/img/Langdongtamhon.jpg'
         },
         {
             name: 'Vì anh đâu có biết',
             singer: 'Thế Khoa',
-            path: '../assets/music/vi_anh_dau_co_biet.mp3',
-            img: '../assets/img/cat.png'
+            path: './assets/music/vi_anh_dau_co_biet.mp3',
+            img: './assets/img/cat.png'
         },
         {
             name: 'Vì sao thế',
             singer: 'Thế Khoa',
-            path: '../assets/music/vi_sao_the.mp3',
-            img: '../assets/img/cat.png'
+            path: './assets/music/vi_sao_the.mp3',
+            img: './assets/img/cat.png'
         }
     ],
 
@@ -102,15 +108,38 @@ const app = {
     },
 
     handleEvent: function() {
+        const _this = this; // _this is 'app', this is whatever element that method was called from.
         document.onscroll = function() {
             // console.log(window.scrollY);
+        };
+
+        // Handle play button clicked (audio only)
+        playBtn.onclick = function() {
+            if (_this.isPlaying) {
+                audio.pause();
+            } else {
+                audio.play();
+            };
+        }
+
+        // When song played:
+        audio.onplay = function() {
+            _this.isPlaying = true;
+            player.classList.add("playing");
+        };
+        // When song paused
+        audio.onpause = function() {
+            _this.isPlaying = false;
+            player.classList.remove("playing");
+        };
+
+        // When song timer running:
+        audio.ontimeupdate = function() {
+            console.log(audio.currentTime);
         };
     },
 
     loadCurrentSong: function() {
-        const heading = $('.header h2');
-        const songAva = $('.song-avatar');
-        const audio = $('#audio');
         heading.textContent = this.currentSong.name;
         songAva.style.backgroundImage = `url('${this.currentSong.img}')`;
         audio.src = this.currentSong.path;
