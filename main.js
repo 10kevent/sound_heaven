@@ -1,10 +1,10 @@
 /**
- * Render song
- * Scroll list up
- * Play - Pause - Seek
- * CD Spining
- * Next - Previous
- * Random function
+ * Render song x
+ * Scroll list up 
+ * Play - Pause - Seek x
+ * CD Spining x
+ * Next - Previous x
+ * Random function x
  * Repeat
  * Active song
  * Play clicked song
@@ -17,11 +17,17 @@ const heading = $('.header h2');
 const songAva = $('.song-avatar');
 const audio = $('#audio');
 const playBtn = $('.play-pause');
+const nextBtn = $('.btn-next');
+const prevBtn = $('.btn-prev');
+const shuffleBtn = $('.btn-shuffle');
 const player = $('.player');
+const progress = $('#progress');
 
 const app = {
     currentIndex: 0,
     isPlaying: false,
+    isShuffling: false,
+
     songs: [
         {
             name: 'Chỉ vì quá yêu anh',
@@ -109,6 +115,16 @@ const app = {
 
     handleEvent: function() {
         const _this = this; // _this is 'app', this is whatever element that method was called from.
+
+        // Handling CD  rotation
+        const songAvaAnimate = songAva.animate([
+            {transform: 'rotate(360deg)'}
+        ], {
+            duration: 10000, // 10 secs
+            iterations: Infinity
+        });
+        songAvaAnimate.pause();
+
         document.onscroll = function() {
             // console.log(window.scrollY);
         };
@@ -126,16 +142,45 @@ const app = {
         audio.onplay = function() {
             _this.isPlaying = true;
             player.classList.add("playing");
+            songAvaAnimate.play();
         };
         // When song paused
         audio.onpause = function() {
             _this.isPlaying = false;
             player.classList.remove("playing");
+            songAvaAnimate.pause();
         };
 
         // When song timer running:
         audio.ontimeupdate = function() {
-            console.log(audio.currentTime);
+            if (audio.duration) {
+                const progressPercent = Math.floor(audio.currentTime / audio.duration * 100);
+                progress.value = progressPercent;
+            }
+        };
+
+        // When move thumb on progress bar (affect song current position) :
+        progress.onchange = function(e)  {
+            const seekTime = e.target.value * audio.duration / 100;
+            audio.currentTime = seekTime;
+        };
+
+        // When next button clicked:
+        nextBtn.onclick = function() {
+            _this.nextSong();
+            audio.play();
+        };
+
+        // When previous button clicked:
+        prevBtn.onclick = function() {
+            _this.prevSong();
+            audio.play();
+        };
+
+        // When shuffle button clicked:
+        shuffleBtn.onclick = function(e) {
+            _this.isShuffling = !_this.isShuffling;
+            shuffleBtn.classList.toggle('active', _this.isShuffling);
         };
     },
 
@@ -145,11 +190,35 @@ const app = {
         audio.src = this.currentSong.path;
     },
 
+    nextSong: function() {
+        this.currentIndex++;
+        if (this.currentIndex >= this.songs.length) {
+            this.currentIndex = 0;
+        };
+        this.loadCurrentSong();
+    },
+
+    prevSong: function() {
+        this.currentIndex--;
+        if (this.currentIndex < 0) {
+            this.currentIndex = this.songs.length - 1;
+        };
+        this.loadCurrentSong();
+    },
+
+    playRandomSong: function() {
+        let newIndex;
+        do {
+            newIndex = Math.floor(Math.random() * this.songs.length);
+        } while (newIndex == this.currentIndex);
+    },
+
     start: function() {
         
         this.defineProperties();
 
         this.handleEvent();
+
         // Load first song into UI when app is started
         this.loadCurrentSong();
 

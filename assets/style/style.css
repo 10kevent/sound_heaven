@@ -59,6 +59,10 @@
 .player.playing .btn-pause {
     display: block;
 }
+.btn.btn-shuffle.active {
+    color: var(--active-button-color);
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
 
 .bar {
     -webkit-appearance: none;
