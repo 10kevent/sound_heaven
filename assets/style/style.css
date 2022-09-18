@@ -5,7 +5,7 @@
     border-radius: 16px;
     width: 400px;
     opacity: .8;
-    box-shadow: 1px 1px 30px 10px #F3CFC6;
+    box-shadow: 1px 1px 30px 10px var(--main-pink);
     text-align: center;
     color: var(--main-black);
 }
@@ -59,7 +59,7 @@
 .player.playing .btn-pause {
     display: block;
 }
-.btn.btn-shuffle.active {
+.btn.active {
     color: var(--active-button-color);
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
 }
@@ -152,6 +152,16 @@
     padding: 8px 10px;
     border-radius: 12px;
     margin-top: 4px;
+}
+.song.active-song {
+    border: 2px solid rgba(0, 0, 0, .4);
+    background-image: linear-gradient(62deg, #F7CE68 0%, #FBAB7E 100%);
+}
+.song:active {
+    opacity: 0.8;
+}
+.song.active-song .title {
+    color: var(--main-black);
 }
 .song:hover {
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);

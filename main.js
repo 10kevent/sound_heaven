@@ -1,18 +1,21 @@
 /**
- * Render song x
+ * Render song          x 
  * Scroll list up 
- * Play - Pause - Seek x
- * CD Spining x
- * Next - Previous x
- * Random function x
- * Repeat
- * Active song
- * Play clicked song
+ * Play - Pause - Seek  x
+ * CD Spining           x
+ * Next - Previous      x
+ * Random function      x
+ * Repeat               x
+ * Active song          x
+ * Play clicked song    x
  */
 
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
+const PLAYER_STORAGE_KEY = 'SOUNDHAVEN';
+
+const player = $('.player');
 const heading = $('.header h2');
 const songAva = $('.song-avatar');
 const audio = $('#audio');
@@ -20,13 +23,16 @@ const playBtn = $('.play-pause');
 const nextBtn = $('.btn-next');
 const prevBtn = $('.btn-prev');
 const shuffleBtn = $('.btn-shuffle');
-const player = $('.player');
+const repeatBtn = $('.btn-repeat');
+const playlist = $('.playlist');
 const progress = $('#progress');
 
 const app = {
     currentIndex: 0,
     isPlaying: false,
-    isShuffling: false,
+    isShuffle: false,
+    isRepeat: false,
+    config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
 
     songs: [
         {
@@ -85,10 +91,15 @@ const app = {
         }
     ],
 
+    setConfig: function(key,value) {
+        this.config[key] = value;
+        localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(this.config));
+    },
+
     render: function() {
-        const htmls = this.songs.map(song => {
+        const htmls = this.songs.map((song, index) => {
             return `
-            <div class="song">
+            <div class="song ${index === this.currentIndex ? 'active-song' : ''}" data-index="${index}">
                 <div class="thumb" 
                     style="background-image: url('${song.img}')">
                 </div>
@@ -167,27 +178,89 @@ const app = {
 
         // When next button clicked:
         nextBtn.onclick = function() {
-            _this.nextSong();
+            if (_this.isShuffle) {
+                _this.playRandomSong();
+            } else {
+                _this.nextSong();
+            };
             audio.play();
+            _this.render();
+            _this.scrollToActiveSong();
         };
 
         // When previous button clicked:
         prevBtn.onclick = function() {
-            _this.prevSong();
+            if (_this.isShuffle) {
+                _this.playRandomSong();
+            } else {
+                _this.prevSong();
+            };
             audio.play();
+            _this.render();
         };
 
         // When shuffle button clicked:
-        shuffleBtn.onclick = function(e) {
-            _this.isShuffling = !_this.isShuffling;
-            shuffleBtn.classList.toggle('active', _this.isShuffling);
+        shuffleBtn.onclick = function() {
+            _this.isShuffle = !_this.isShuffle;
+            _this.setConfig('isShuffle', _this.isShuffle); 
+            shuffleBtn.classList.toggle('active', _this.isShuffle);
         };
+
+        // Auto next song/repeat if repeat is on:
+        audio.onended = function() {
+            if(_this.isRepeat) {
+                audio.play();
+            } else {
+                nextBtn.click();
+            }
+        };
+
+        // When repeat button is clicked:
+        repeatBtn.onclick = function() {
+            _this.isRepeat = !_this.isRepeat;
+            _this.setConfig('isRepeat', _this.isRepeat);
+            repeatBtn.classList.toggle('active', _this.isRepeat);
+        };
+
+        // When playlist clicked:
+        playlist.onclick = function(e) {
+            const songNode = e.target.closest('.song:not(.active-song');
+            // Click song / option:
+            if (songNode || e.target.closest('.option')) {
+                // Song clicked:
+                if (songNode) {
+                    //console.log(songNode.dataset.index); // data-index => go to dataset
+                    _this.currentIndex = Number(songNode.dataset.index); // dataset => string
+                    _this.loadCurrentSong();
+                    audio.play();
+                    _this.render();
+                };
+                // Option clicked:
+                if (e.target.closest('.option')) {
+
+                };
+            }
+        };
+    },
+
+    scrollToActiveSong: function() {
+        setTimeout(() => {
+            $('.active-song').scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            });
+        }, 300);
     },
 
     loadCurrentSong: function() {
         heading.textContent = this.currentSong.name;
         songAva.style.backgroundImage = `url('${this.currentSong.img}')`;
         audio.src = this.currentSong.path;
+    },
+
+    loadConfig: function() {
+        this.isShuffle = this.config.isShuffle;
+        this.isRepeat = this.config.isRepeat;
     },
 
     nextSong: function() {
@@ -210,11 +283,19 @@ const app = {
         let newIndex;
         do {
             newIndex = Math.floor(Math.random() * this.songs.length);
-        } while (newIndex == this.currentIndex);
+        } while (newIndex === this.currentIndex);
+        this.currentIndex = newIndex;
+        this.loadCurrentSong();
+    },
+
+    replaySong: function() {
+
     },
 
     start: function() {
-        
+        // Load config into app:
+        this.loadConfig();        
+
         this.defineProperties();
 
         this.handleEvent();
@@ -223,6 +304,9 @@ const app = {
         this.loadCurrentSong();
 
         this.render();
+
+        shuffleBtn.classList.toggle('active', this.isShuffle);
+        repeatBtn.classList.toggle('active', this.isRepeat);
     },
 }
 
