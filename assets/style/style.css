@@ -1,3 +1,6 @@
+.player {
+    position: relative;;
+}
 .dashboard {
     background-color: #85FFBD;
     background-image: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%);
@@ -14,7 +17,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
+    margin: 0 -12px 24px;
 }
 
 .dash-icon {
@@ -26,6 +29,13 @@
 }
 .dash-icon-main {
     font-size: 5.4rem;
+}
+
+.btn-menu,
+.btn-like,
+.btn-unlike {
+    font-size: 2.4rem;
+    font-weight: 800;
 }
 
 .header_main {
@@ -85,6 +95,7 @@
     cursor: pointer;
     box-shadow: 1px 0 4px #999;
     /* visibility: hidden; */
+    transition: all 0.06s ease;
 }
 .bar::-webkit-slider-thumb:hover {
     /* visibility: visible; */
@@ -102,15 +113,32 @@
     margin: auto 0;
 }
 
+.playlist-wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    transition: 0.5s;
+    opacity: 0;
+    transform: translateY(50%);
+}
 .playlist {
     background-color: #FAD961;
     background-image: linear-gradient(90deg, #FAD961 0%, #F76B1C 100%);
     border-radius: 16px;
     padding: 16px 20px;
     color: var(--main-white);
-    max-height: 555px;
-    overflow-y: auto;
-    scrollbar-width: none;
+    width: 400px;
+}
+.playlist-wrapper-show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
 }
 .playlist::-webkit-scrollbar {
     display: none;
@@ -131,10 +159,9 @@
     padding: 4px 8px;
 }
 .playlist-icon:hover {
-    text-shadow: 1px 1px 10px #333;
+    text-shadow: 1px 1px 2px #333;
 }
-.song-list {
-}
+
 .thumb {
     height: 60px;
     width: 60px;
@@ -145,13 +172,22 @@
     background-origin: content-box;
     margin-right: 8px;
 }
+.song-list {
+    list-style: none;
+    max-height: 480px;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.song-list::-webkit-scrollbar {
+    display: none;
+}
 .song {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 8px 10px;
     border-radius: 12px;
-    margin-top: 4px;
+    margin-top: 4px;;
 }
 .song.active-song {
     border: 2px solid rgba(0, 0, 0, .4);
@@ -163,9 +199,10 @@
 .song.active-song .title {
     color: var(--main-black);
 }
-.song:hover {
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+.playlist .song:not(.active-song):hover {
+    opacity: 0.8;
     cursor: pointer;
+    transform: translate3d(0, 2px, 2px);
 }
 .song:hover .thumb {
     box-shadow: 1px 1px 5px #999;
@@ -182,8 +219,4 @@
 }
 .option {
     margin-left: auto;
-}
-
-.voice {
-
 }

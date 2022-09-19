@@ -19,12 +19,16 @@ const player = $('.player');
 const heading = $('.header h2');
 const songAva = $('.song-avatar');
 const audio = $('#audio');
+const menuBtn = $('.btn-menu');
+const likeBtn = $('.btn-like');
+const closeBtn = $('.btn-close');
 const playBtn = $('.play-pause');
 const nextBtn = $('.btn-next');
 const prevBtn = $('.btn-prev');
 const shuffleBtn = $('.btn-shuffle');
 const repeatBtn = $('.btn-repeat');
 const playlist = $('.playlist');
+const wrapper = $('.playlist-wrapper');
 const progress = $('#progress');
 
 const app = {
@@ -240,6 +244,21 @@ const app = {
 
                 };
             }
+        };
+
+        // When menu button clicked:
+        menuBtn.onclick = function() {
+            wrapper.classList.toggle('playlist-wrapper-show');
+        };
+        // When close button clicked:
+        closeBtn.onclick = function() {
+            wrapper.classList.toggle('playlist-wrapper-show');
+        };
+
+        // When like button clicked:
+        likeBtn.onclick = function() {
+            likeBtn.classList.toggle('fa-solid');
+            likeBtn.classList.toggle('fa-regular');
         };
     },
 

@@ -17,12 +17,12 @@
     <div class="player">
         <div class="dashboard">
             <div class="header">
-                <i class="fa-solid fa-bars dash-icon btn"></i>
+                <i class="fa-solid fa-bars dash-icon btn btn-menu"></i>
                 <div class="header_main">
                     <h4>Now Playing</h4>
                     <h2>Funky Meow</h2>
                 </div>
-                <i class="fa-regular fa-heart dash-icon btn"></i>
+                <i class="fa-regular fa-heart dash-icon btn btn-like"></i>
             </div>
 
             <div class="song-avatar">
@@ -64,15 +64,17 @@
             </div>
         </div>
 
-        <div class="playlist">
-            <div class="playlist-heading">
-                <h2 class="playlist-title">Your playlist</h2>
-                <i class="fa-solid fa-xmark playlist-icon mr-8"></i>
+        <div class="playlist-wrapper">
+            <div class="playlist">
+                <header class="playlist-heading">
+                    <h2 class="playlist-title">Your playlist</h2>
+                    <i class="fa-solid fa-xmark playlist-icon mr-8 btn-close"></i>
+                </header>
+                
+                <ul class="song-list">
+    
+                </ul>
             </div>
-            
-            <ul class="song-list">
-
-            </ul>
         </div>
     </div>
     <script src="./main.js"></script>

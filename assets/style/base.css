@@ -18,7 +18,8 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 150vh;
+    height: 100vh;
+    scroll-behavior: smooth;
 }
 
 body {
