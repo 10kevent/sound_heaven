@@ -33,7 +33,7 @@ const wrapper = $('.playlist-wrapper');
 const progress = $('#progress');
 const volumeBar = $('#volume');
 
-const playedSongList = new Set();
+const playedSongList = new Set([0]);
 
 const app = {
     currentIndex: 0,
@@ -84,7 +84,7 @@ const app = {
             img: './assets/img/cat.png'
         },
         {
-            name: 'Uyên Ương Hồ Điệp Mộng',
+            name: 'Uyên Ương Hồ Điệp',
             singer: 'Hoàng An',
             path: './assets/music/uyen_uong_ho_diep.mp3',
             img: './assets/img/Langdongtamhon.jpg'
@@ -182,7 +182,6 @@ const app = {
                 progress.onchange = function(e)  {
                     const seekTime = e.target.value * audio.duration / 100;
                     audio.currentTime = seekTime;
-                    console.log(seekTime);
                 };
             };
         };
@@ -258,6 +257,7 @@ const app = {
                     //console.log(songNode.dataset.index); // data-index => go to dataset
                     _this.currentIndex = Number(songNode.dataset.index); // dataset => string
                     _this.loadCurrentSong();
+                    playedSongList.add(_this.currentIndex);
                     audio.play();
                     _this.render();
                 };
@@ -354,7 +354,7 @@ const app = {
         this.loadCurrentSong();
         // Random only unplayed songs
         playedSongList.add(newIndex);
-        if (playedSongList.length === this.songs.length) {
+        if (playedSongList.size === this.songs.length) {
             playedSongList.clear();
         }
     },
