@@ -1,5 +1,5 @@
 .player {
-    position: relative;;
+    position: relative;
 }
 .dashboard {
     background-color: #85FFBD;
@@ -20,9 +20,11 @@
     margin: 0 -12px 24px;
 }
 
+/* Buttons and icons */
 .dash-icon {
     font-size: 1.9rem;
     padding: 4px 8px;
+    user-select: none;
 }
 .dash-icon:hover {
     text-shadow: 1px 1px 3px #666;
@@ -38,6 +40,21 @@
     font-weight: 800;
 }
 
+.player .btn-pause {
+    display: none;
+}
+.player.playing .btn-play {
+    display: none;
+}
+.player.playing .btn-pause {
+    display: block;
+}
+.btn.active {
+    color: var(--active-button-color);
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Dashboard header */
 .header_main {
     display: flex;
     align-items: center;
@@ -53,6 +70,7 @@
     margin: 16px auto;
 }
 
+/* Dashboard controller */
 .controller {
     display: flex;
     justify-content: space-around;
@@ -60,20 +78,8 @@
     margin-top: 32px;
     margin-bottom: 16px;
 }
-.player .btn-pause {
-    display: none;
-}
-.player.playing .btn-play {
-    display: none;
-}
-.player.playing .btn-pause {
-    display: block;
-}
-.btn.active {
-    color: var(--active-button-color);
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
-}
 
+/* Sliders */
 .bar {
     -webkit-appearance: none;
     height: 6px;
@@ -103,6 +109,7 @@
     height: 16px;
 }
 
+/* Volumn */
 .voice .dash-icon {
     position: relative;
     top: 5px;
@@ -113,6 +120,7 @@
     margin: auto 0;
 }
 
+/* Song playlist */
 .playlist-wrapper {
     position: fixed;
     left: 0;
@@ -162,6 +170,18 @@
     text-shadow: 1px 1px 2px #333;
 }
 
+/* Playlist main ul */
+.song-list {
+    list-style: none;
+    max-height: 480px;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.song-list::-webkit-scrollbar {
+    display: none;
+}
+
+/* Song */
 .thumb {
     height: 60px;
     width: 60px;
@@ -171,15 +191,6 @@
     background-clip: padding-box;
     background-origin: content-box;
     margin-right: 8px;
-}
-.song-list {
-    list-style: none;
-    max-height: 480px;
-    overflow-y: auto;
-    scrollbar-width: none;
-}
-.song-list::-webkit-scrollbar {
-    display: none;
 }
 .song {
     display: flex;

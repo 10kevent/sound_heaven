@@ -27,15 +27,23 @@ const nextBtn = $('.btn-next');
 const prevBtn = $('.btn-prev');
 const shuffleBtn = $('.btn-shuffle');
 const repeatBtn = $('.btn-repeat');
+const volumeBtn = $('.btn-volume');
 const playlist = $('.playlist');
 const wrapper = $('.playlist-wrapper');
 const progress = $('#progress');
+const volumeBar = $('#volume');
+
+const playedSongList = new Set();
 
 const app = {
     currentIndex: 0,
+    currentVolume: 1,
+    savedVolume: 1,
     isPlaying: false,
     isShuffle: false,
     isRepeat: false,
+    isMuted: false,
+    isHoldingProgress: false,
     config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
 
     songs: [
@@ -140,10 +148,6 @@ const app = {
         });
         songAvaAnimate.pause();
 
-        document.onscroll = function() {
-            // console.log(window.scrollY);
-        };
-
         // Handle play button clicked (audio only)
         playBtn.onclick = function() {
             if (_this.isPlaying) {
@@ -166,18 +170,35 @@ const app = {
             songAvaAnimate.pause();
         };
 
-        // When song timer running:
+        // When song timer running and drag handler:
         audio.ontimeupdate = function() {
+            // if (!_this.isHoldingProgress) {
+            //     const progressPercent = Math.floor(audio.currentTime / audio.duration * 100);
+            //     progress.value = progressPercent;
+            //     console.log(progress.value);
+            // } else 
             if (audio.duration) {
-                const progressPercent = Math.floor(audio.currentTime / audio.duration * 100);
-                progress.value = progressPercent;
-            }
+                // When move thumb on progress bar (affect song current position) :
+                progress.onchange = function(e)  {
+                    const seekTime = e.target.value * audio.duration / 100;
+                    audio.currentTime = seekTime;
+                    console.log(seekTime);
+                };
+            };
+        };
+        progress.onmousedown = function() {
+            _this.isHoldingProgress = true;
         };
 
-        // When move thumb on progress bar (affect song current position) :
-        progress.onchange = function(e)  {
-            const seekTime = e.target.value * audio.duration / 100;
-            audio.currentTime = seekTime;
+        // When move thumb on volume bar:
+        volumeBar.onchange = function(e) {
+            const seekVolume = e.target.value / 100;
+            if (seekVolume === 0) {
+                volumeBtn.click();
+            } else {
+                audio.volume = seekVolume;
+                _this.currentVolume = audio.volume;
+            };
         };
 
         // When next button clicked:
@@ -201,6 +222,7 @@ const app = {
             };
             audio.play();
             _this.render();
+            _this.scrollToActiveSong();
         };
 
         // When shuffle button clicked:
@@ -212,7 +234,7 @@ const app = {
 
         // Auto next song/repeat if repeat is on:
         audio.onended = function() {
-            if(_this.isRepeat) {
+            if(_this.isRepeat && !_this.isShuffle) {
                 audio.play();
             } else {
                 nextBtn.click();
@@ -241,7 +263,7 @@ const app = {
                 };
                 // Option clicked:
                 if (e.target.closest('.option')) {
-
+                    // Something'll pop up
                 };
             }
         };
@@ -260,6 +282,26 @@ const app = {
             likeBtn.classList.toggle('fa-solid');
             likeBtn.classList.toggle('fa-regular');
         };
+
+        // When volume button clicked return to original volume if clicked twice:
+        volumeBtn.onclick = function() {
+            _this.isMuted = !_this.isMuted;
+            volumeBtn.classList.toggle('fa-volume-xmark');
+            volumeBtn.classList.toggle('fa-volume-high');
+            if (_this.isMuted) {
+                savedVolume = audio.volume;
+                audio.volume = 0;
+                volumeBar.value = audio.volume;
+            }
+            else {
+                audio.volume = savedVolume;
+                volumeBar.value = audio.volume * 100;
+            }
+        };
+
+        window.onmouseup = function() {
+            _this.isHoldingProgress = false;
+        }
     },
 
     scrollToActiveSong: function() {
@@ -275,6 +317,11 @@ const app = {
         heading.textContent = this.currentSong.name;
         songAva.style.backgroundImage = `url('${this.currentSong.img}')`;
         audio.src = this.currentSong.path;
+        progress.value = 0;
+
+        audio.onloadedmetadata = function() {
+
+        };
     },
 
     loadConfig: function() {
@@ -302,13 +349,14 @@ const app = {
         let newIndex;
         do {
             newIndex = Math.floor(Math.random() * this.songs.length);
-        } while (newIndex === this.currentIndex);
+        } while (playedSongList.has(newIndex));
         this.currentIndex = newIndex;
         this.loadCurrentSong();
-    },
-
-    replaySong: function() {
-
+        // Random only unplayed songs
+        playedSongList.add(newIndex);
+        if (playedSongList.length === this.songs.length) {
+            playedSongList.clear();
+        }
     },
 
     start: function() {
