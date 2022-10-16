@@ -172,11 +172,6 @@ const app = {
 
         // When song timer running and drag handler:
         audio.ontimeupdate = function() {
-            // if (!_this.isHoldingProgress) {
-            //     const progressPercent = Math.floor(audio.currentTime / audio.duration * 100);
-            //     progress.value = progressPercent;
-            //     console.log(progress.value);
-            // } else 
             if (audio.duration) {
                 // When move thumb on progress bar (affect song current position) :
                 progress.onchange = function(e)  {
@@ -318,10 +313,6 @@ const app = {
         songAva.style.backgroundImage = `url('${this.currentSong.img}')`;
         audio.src = this.currentSong.path;
         progress.value = 0;
-
-        audio.onloadedmetadata = function() {
-
-        };
     },
 
     loadConfig: function() {
@@ -361,7 +352,7 @@ const app = {
 
     start: function() {
         // Load config into app:
-        this.loadConfig();        
+        this.loadConfig();
 
         this.defineProperties();
 
